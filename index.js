@@ -31,6 +31,20 @@ async function run() {
     const cartsCollection = client.db("bistro").collection("carts");
     const usersCollection = client.db("bistro").collection("users");
 
+
+    app.delete('/users/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await usersCollection.deleteOne(query)
+      res.send(
+        result
+      )
+
+
+    })
+
+
+    // menu
     app.get("/menu", async (req, res) => {
       const result = await menuCollection.find().toArray();
       res.send(result);
