@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
 const {
   MongoClient,
   ServerApiVersion,
@@ -32,6 +33,9 @@ async function run() {
     const usersCollection = client.db("bistro").collection("users");
 
 
+// jwt tokenn
+
+
     app.delete('/users/:id',async(req,res)=>{
       const id = req.params.id;
       const query = {_id : new ObjectId(id)}
@@ -42,6 +46,18 @@ async function run() {
 
 
     })
+
+app.patch('/users/admin/:id',async(req,res)=>{
+  const id = req.params.id;
+  const filter= {_id : new ObjectId(id)}
+  const updateDoc ={
+    $set:{
+      role :'admin'
+    }
+  }
+  const result = await usersCollection.updateOne(filter,updateDoc)
+ res.send(result)
+})
 
 
     // menu
