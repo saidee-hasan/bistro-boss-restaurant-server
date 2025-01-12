@@ -36,7 +36,7 @@ async function run() {
 // jwt token
 app.post('/jwt',async(req,res)=>{
   const user = req.body;
-  const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1h'})
+  const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'5h'})
  res.send({token});
 
 })
@@ -120,6 +120,13 @@ app.patch('/users/admin/:id',verifyToken,verifyAdmin,async(req,res)=>{
       const result = await menuCollection.find().toArray();
       res.send(result);
     });
+
+    app.post('/menu', verifyToken,verifyAdmin ,async(req,res)=>{
+      const item =req.body;
+      const result = await menuCollection.insertOne(item);
+      console.log(result)
+      res.send(result);
+    })
     app.get("/reviews", async (req, res) => {
       const result = await reviewsCollection.find().toArray();
       res.send(result);
